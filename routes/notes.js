@@ -33,8 +33,9 @@ router.post('/', function(req, res, next) {
         notesdata = JSON.parse(data);
         //console.log(notesdata);
         var newNotesId = Object.keys(notesdata).length + 1;
-        notesdata[newNotesId] = req.body.data;
+        notesdata[newNotesId] = JSON.parse(req.body.data + newNotesId + "}");
         console.log(notesdata);
+        console.log(newNotesId);
         //fs.writeFile(dataPath, JSON.stringify(notesdata));
     });
 
