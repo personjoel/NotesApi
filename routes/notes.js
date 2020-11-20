@@ -15,6 +15,34 @@ router.get('/', function(req, res, next) {
   });
 });
 
+//get specific note
+router.get('/:id', function(req, res, next) {
+    fs.readFile(dataPath, (err,data) =>{
+        if(err) {
+            throw err;
+        }
+        notesdata = JSON.parse(data);
+
+        var id = req.params.id;
+
+        res.send(notesdata[id]);
+    });
+  });
+
+//Delete a specific note
+router.delete('/:id', function(req, res, next){
+    fs.readFile(dataPath, (err,data) =>{
+        if (err) {
+            throw err;
+        }
+        notesdata = JSON.parse(data);
+
+        var id = req.params.id;
+        console.log(id);
+
+    })
+})
+
 //POST a new Note
 router.post('/', function(req, res, next) {
 
@@ -33,10 +61,15 @@ router.post('/', function(req, res, next) {
         notesdata = JSON.parse(data);
         //console.log(notesdata);
         var newNotesId = Object.keys(notesdata).length + 1;
-        notesdata[newNotesId] = JSON.parse(req.body.data + newNotesId + "}");
+        notesdata[newNotesId] = JSON.parse(req.body.data);
+        notesdata[newNotesId].id = newNotesId;
         console.log(notesdata);
         console.log(newNotesId);
-        //fs.writeFile(dataPath, JSON.stringify(notesdata));
+        fs.writeFile(dataPath, JSON.stringify(notesdata), (err) => {
+            if (err) {
+                throw err;
+            }
+        });
     });
 
     //vi FÖRVÄNTAR oss att nu är notesdata populerat med data
